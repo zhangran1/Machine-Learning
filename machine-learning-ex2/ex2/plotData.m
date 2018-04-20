@@ -11,13 +11,14 @@ figure; hold on;
 %               2D plot, using the option 'k+' for the positive
 %               examples and 'ko' for the negative examples.
 %
+% The following implementation is copy from the assignment ex2.pdf doc
+pos = find(y ==1);
+neg = find(y==0);
+% the find command will get all the index for y value is 1 or 0.
 
+plot(X(pos, 1), X(pos, 2), 'k+', 'LineWidth', 2, 'MarkerSize', 7);
 
-
-
-
-
-
+plot(X(neg, 1), X(neg, 2), 'ko', 'MarkerFaceColor', 'y', 'MarkerSize', 7);
 
 
 % =========================================================================
