@@ -17,15 +17,23 @@ for iter = 1:num_iters
     %       of the cost function (computeCostMulti) and gradient here.
     %
 
+    #{
+    h = X*theta;
 
-
-
-
-
-
-
-
-
+    theta_length = length(theta);
+    
+    for i  = 1: theta_length,
+        theta_original(i) = theta(i) - alpha * (1/m) * sum((h - y) .* X(:, i));
+    end
+    
+    theta = theta_original;
+    #}
+    
+    % reference for vectorize implementation of multi variable gradient descent
+    %https://stackoverflow.com/questions/20736460/vectorizing-a-gradient-descent-algorithm
+    gradient = (alpha /m) * X' * (X*theta - y);
+    
+    theta = theta - gradient;
 
     % ============================================================
 
