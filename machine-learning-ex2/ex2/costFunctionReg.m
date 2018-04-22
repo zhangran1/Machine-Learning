@@ -26,7 +26,8 @@ J = (1 / m) * sum(-y .* log(h) - (1 - y) .* log(1-h)) + (lambda /(2*m)) * sum(th
 % the following code was refered from below link:
 %https://chameerawijebandara.wordpress.com/2014/07/18/logistic-regression-with-regularization-in-matlaboctave/
 
-grad(1) =   ( sum(( h - y ).* X( :,1 ))) / m ;
+grad(1) =   ( sum(( h - y ).* X( :,1 ))) / m;
+
 for j = 2:length( theta )   
  
     grad(j) =   ( sum(( h - y ).*X( :,j ))) / m + (lambda*theta(j))/m;
