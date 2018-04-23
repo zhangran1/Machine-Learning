@@ -1,1 +1,1 @@
-# machinelearning
+This repository is used to record the solution for Andrew Ng's Machine Learning excercises.
