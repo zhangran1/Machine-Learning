@@ -30,11 +30,11 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
+p_cost = sigmoid(X*all_theta');
 
+[p_max, i_max]=max(p_cost, [], 2);
 
-
-
-
+p = i_max;
 
 % =========================================================================
 
