@@ -30,6 +30,9 @@ a2 = [ones(size(z2, 1), 1) sigmoid(z2)];
 z3 = a2*Theta2';
 a3 = sigmoid(z3);
 
+%If dim = 1, then max(A,[],1) returns a row vector containing the largest element in each column.
+%If dim = 2, then max(A,[],2) returns a column vector containing the largest element in each row.
+%Reference: https://www.mathworks.com/help/matlab/ref/max.html#bubhhu5-1-M
 [p_max, p] = max(a3, [], 2);
 
 
