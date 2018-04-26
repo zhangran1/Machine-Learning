@@ -62,23 +62,92 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% recode y to Y, why do we need to perform this step
+
+% ====================== Part 1 ======================
+
+I = eye(num_labels);
+Y = zeros(m, num_labels);
+for i=1:m
+  Y(i, :)= I(y(i), :);
+end
+
+a1 = [ones(m, 1) X];
+z2 = a1*Theta1';
+a2 = [ones(size(z2, 1), 1) sigmoid(z2)];
+z3 = a2*Theta2';
+a3 = sigmoid(z3);
+h = a3;
+
+J = sum(sum((-Y).*log(h) - (1-Y).*log(1-h), 2))/m;
+
+regularization = (lambda/(2*m) * (sum(sum(Theta1(:,2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2))));
+
+J = J + regularization;
+
+% ====================== Part 2 ======================
+% refer from here: https://github.com/bsmithgall/coursera-ml/blob/master/ex4-003/mlclass-ex4/nnCostFunction.m
+#{
+X = [ones(m,1) X];
+
+yMatrix = zeros(num_labels, m);
+
+for i=1:num_labels,
+    yMatrix(i,:) = (y==i);
+endfor
 
 
+for k = 1:m,
+    % First, we do forward propogation on an X that already contains
+    % the bias node (from above)
 
+    a1 = X(k,:);
+    z2 = Theta1 * a1';
 
+    a2 = sigmoid(z2);
+    a2 = [1 ; a2];
 
+    % Now we have our final activation layer a3 == h(theta)
+    a3 = sigmoid(Theta2 * a2);
 
+    % Now that we have our activation layer, we go backwards
+    % This basically just involves following along the formulas given
+    % on Page 9
+    d3 = a3 - yMatrix(:,k);
+    
+    % Re-add a bais node for z2
+    z2 = [1 ; z2];
+    d2 = (Theta2' * d3) .* sigmoidGradient(z2);
+    % Strip out bais node from resulting d2
+    d2 = d2(2:end);
 
+    Theta2_grad = (Theta2_grad + d3 * a2');
+    Theta1_grad = (Theta1_grad + d2 * a1);
 
+endfor;
 
+Theta2_grad = Theta2_grad ./ m;
+Theta1_grad = Theta1_grad ./ m;
 
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end)./m + ( (lambda/m) * Theta1(:,2:end) );
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end)./m + ( (lambda/m) * Theta2(:,2:end) );
 
+#}
 
+%Refer from here:https://github.com/everpeace/ml-class-assignments/blob/master/ex4.
+%Neural_Network_Learning/mlclass-ex4/nnCostFunction.m
 
+delta3 = a3 .- Y;
+delta2 = (delta3 * Theta2) .* sigmoidGradient([ones(size(z2, 1), 1) z2]);
+delta2 = delta2(:, 2:end);
 
+delta_1 = delta2' * a1;
+delta_2 =delta3' * a2; 
 
-
-
+p1 = (lambda/m)*[zeros(size(Theta1, 1), 1) Theta1(:, 2:end)];
+p2 = (lambda/m)*[zeros(size(Theta2, 1), 1) Theta2(:, 2:end)];
+Theta1_grad = delta_1./m + p1;
+Theta2_grad = delta_2./m + p2;
 
 % -------------------------------------------------------------
 
